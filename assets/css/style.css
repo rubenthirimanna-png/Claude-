@@ -518,7 +518,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .pillars { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 960px) {
-  .nav { position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; padding: 10px 16px 24px; max-height: calc(100svh - 100px); overflow: auto; background: rgba(7,7,7,.97); border-bottom: 1px solid var(--line); opacity: 0; visibility: hidden; transform: translateY(-12px); transition: opacity .3s, transform .45s var(--ease), visibility .3s; }
+  .nav { position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; padding: 10px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px)); max-height: calc(100svh - 100px); overflow: auto; background: rgba(7,7,7,.97); border-bottom: 1px solid var(--line); opacity: 0; visibility: hidden; transform: translateY(-12px); transition: opacity .3s, transform .45s var(--ease), visibility .3s; }
   .nav.is-open { opacity: 1; visibility: visible; transform: none; }
   .nav a { padding: 15px 4px; font-size: 20px; font-family: var(--display); font-weight: 400; letter-spacing: .03em; border-bottom: 1px solid var(--line); }
   .nav a::after { display: none; }
