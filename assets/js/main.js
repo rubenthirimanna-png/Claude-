@@ -298,7 +298,7 @@
     $$(".card").forEach((c) => {
       const show = f === "all" || c.dataset.filters.split(" ").includes(f);
       c.classList.toggle("is-hidden", !show);
-      if (show) { c.classList.remove("pop"); void c.offsetWidth; c.style.animationDelay = n++ * 60 + "ms"; c.classList.add("pop", "is-visible"); }
+      if (show) { c.classList.remove("pop"); void c.offsetWidth; c.style.animationDelay = n++ * 60 + "ms"; c.classList.remove("is-in"); c.classList.add("pop"); }
     });
   }
   $("#filters").addEventListener("click", (e) => { const b = e.target.closest(".filter"); if (b) applyFilter(b.dataset.filter); });
@@ -573,12 +573,11 @@
     entries.forEach((en) => {
       if (!en.isIntersecting) return;
       const el = en.target;
-      el.classList.add("is-visible");
+      el.classList.add("is-in");
       $$("[data-count]", el).forEach(countUp);
-      if (el.classList.contains("stock")) $("#stockBar").style.width = "23%";
       revObs.unobserve(el);
     });
-  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  }, { threshold: 0, rootMargin: "0px 0px 120px 0px" }); // startet kurz bevor der Block sichtbar wird
 
   /* ---------- 3D-Tilt ---------- */
   function bindTilt(el) {
@@ -650,7 +649,7 @@
   restartHeroTimer();
   setFlavor(0, false);
   particles();
-  $$(".reveal, .stock").forEach((el) => revObs.observe(el));
+  $$(".reveal").forEach((el) => revObs.observe(el));
   $$(".tilt").forEach(bindTilt);
   $$(".magnetic").forEach(bindMagnetic);
   $("#year").textContent = new Date().getFullYear();
