@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Top G Nutrition – Made for Champions</title>
+  <meta name="description" content="Top G Nutrition – Premium Supplements. 100% Made in Germany. EAA+, Clear Protein, Vegan Protein & Mass Gainer. Quality first. Always." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__crown">
+      <svg viewBox="0 0 64 40"><path d="M4 36 L8 8 L22 22 L32 4 L42 22 L56 8 L60 36 Z" /></svg>
+    </div>
+    <div class="preloader__bar"><span></span></div>
+  </div>
+
+  <!-- Announcement -->
+  <div class="announce" role="region" aria-label="Neuigkeiten">
+    <div class="announce__track">
+      <span>🚨 EAA+ BACK IN STOCK – sichern, bevor es wieder weg ist</span>
+      <span>🇩🇪 100% Made in Germany</span>
+      <span>🚚 Gratis Versand ab 59 €</span>
+      <span>🏆 Made for Champions</span>
+      <span>🚨 EAA+ BACK IN STOCK – sichern, bevor es wieder weg ist</span>
+      <span>🇩🇪 100% Made in Germany</span>
+      <span>🚚 Gratis Versand ab 59 €</span>
+      <span>🏆 Made for Champions</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#top" class="logo" aria-label="Top G Nutrition Startseite">
+        <svg class="logo__crown" viewBox="0 0 64 40" aria-hidden="true"><path d="M4 36 L8 8 L22 22 L32 4 L42 22 L56 8 L60 36 Z" /></svg>
+        <span class="logo__text">TOP G<small>NUTRITION</small></span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Hauptnavigation">
+        <a href="#shop">Shop</a>
+        <a href="#finder">Ziel-Finder</a>
+        <a href="#eaa">EAA+</a>
+        <a href="#quality">Qualität</a>
+        <a href="#community">Community</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="header__actions">
+        <button class="icon-btn cart-btn" id="cartOpen" aria-label="Warenkorb öffnen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1.2 12.1a2 2 0 0 1-2 1.9H9.2a2 2 0 0 1-2-1.9L6 7Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>
+          <span class="cart-btn__count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn burger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__bg">
+        <div class="hero__glow hero__glow--1"></div>
+        <div class="hero__glow hero__glow--2"></div>
+        <div class="hero__grid"></div>
+        <canvas id="particles"></canvas>
+      </div>
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow reveal"><span class="flag"></span> 100% Made in Germany</p>
+          <h1 class="hero__title">
+            <span class="line"><span class="reveal-up">MADE FOR</span></span>
+            <span class="line"><span class="reveal-up gold">CHAMPIONS</span></span>
+          </h1>
+          <p class="hero__lead reveal">Kein Zufall, kein Shortcut – nur Fokus, Disziplin und der richtige Fuel. Premium Supplements für Muskelaufbau, Definition und pure Kraft. <strong>Quality first. Always.</strong></p>
+          <div class="hero__cta reveal">
+            <a href="#shop" class="btn btn--gold magnetic">Jetzt shoppen <span class="arrow">→</span></a>
+            <a href="#finder" class="btn btn--ghost magnetic">Deine Formel finden</a>
+          </div>
+          <ul class="hero__stats reveal">
+            <li><b data-count="9">0</b><span>essentielle<br>Aminosäuren</span></li>
+            <li><b data-count="11" data-suffix="g">0</b><span>Protein pro<br>EAA+ Shake</span></li>
+            <li><b data-count="100" data-suffix="%">0</b><span>Made in<br>Germany</span></li>
+          </ul>
+        </div>
+
+        <div class="hero__stage" id="heroStage">
+          <div class="hero__ring"></div>
+          <div class="hero__ring hero__ring--2"></div>
+          <div class="hero__product" id="heroProduct"></div>
+          <div class="hero__badge hero__badge--1 float">🍒 Cherry Fruit</div>
+          <div class="hero__badge hero__badge--2 float">🚫 Gluten- & laktosefrei</div>
+          <div class="hero__badge hero__badge--3 float">🥤 20 Servings</div>
+          <div class="hero__switch" id="heroSwitch" role="tablist" aria-label="Produkt im Hero wählen"></div>
+        </div>
+      </div>
+      <a href="#ticker" class="scroll-hint" aria-label="Weiter scrollen"><span></span></a>
+    </section>
+
+    <!-- Ticker -->
+    <div class="ticker" id="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>MORE REPS</span><i>✦</i><span>MORE POWER</span><i>✦</i><span>NO SHORTCUTS</span><i>✦</i><span>QUALITY FIRST</span><i>✦</i><span>CHAMPION MINDSET</span><i>✦</i>
+        <span>MORE REPS</span><i>✦</i><span>MORE POWER</span><i>✦</i><span>NO SHORTCUTS</span><i>✦</i><span>QUALITY FIRST</span><i>✦</i><span>CHAMPION MINDSET</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- SHOP -->
+    <section class="section shop" id="shop">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <p class="eyebrow reveal">Das Sortiment</p>
+            <h2 class="section__title reveal">DEIN FUEL.<br><span class="gold">KEINE KOMPROMISSE.</span></h2>
+          </div>
+          <div class="filters reveal" id="filters" role="tablist" aria-label="Produkte filtern">
+            <button class="filter is-active" data-filter="all">Alle</button>
+            <button class="filter" data-filter="muskelaufbau">Muskelaufbau</button>
+            <button class="filter" data-filter="definition">Definition</button>
+            <button class="filter" data-filter="performance">Performance</button>
+            <button class="filter" data-filter="vegan">Vegan</button>
+          </div>
+        </div>
+        <div class="products" id="products"></div>
+      </div>
+    </section>
+
+    <!-- GOAL FINDER -->
+    <section class="section finder" id="finder">
+      <div class="container finder__inner">
+        <div class="finder__intro">
+          <p class="eyebrow reveal">Ziel-Finder</p>
+          <h2 class="section__title reveal">DEIN ZIEL.<br><span class="gold">DEINE FORMEL.</span></h2>
+          <p class="reveal">Jeder hat ein anderes Ziel – Muskelaufbau, Definition oder einfach stärker werden. Aber eins bleibt gleich: die Champion-Mentalität. Beantworte 3 kurze Fragen und wir stellen dir deinen persönlichen Stack zusammen.</p>
+        </div>
+        <div class="quiz reveal" id="quiz">
+          <div class="quiz__progress"><span id="quizBar"></span></div>
+          <div class="quiz__body" id="quizBody"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EAA SPOTLIGHT -->
+    <section class="section spotlight" id="eaa">
+      <div class="spotlight__bg"></div>
+      <div class="container spotlight__inner">
+        <div class="spotlight__visual">
+          <div class="spotlight__burst"></div>
+          <div class="spotlight__product tilt" id="spotlightProduct"></div>
+          <span class="stamp">BACK<br>IN<br>STOCK</span>
+        </div>
+        <div class="spotlight__copy">
+          <p class="eyebrow eyebrow--red reveal">🚨 Back in Stock</p>
+          <h2 class="section__title reveal">MORE REPS.<br><span class="red">MORE POWER.</span></h2>
+          <p class="reveal">Und ja… der Geschmack? <strong>BRUTAL.</strong> 🍒💥 EAA+ ist wieder da und stärker denn je. Weg war's schnell – jetzt heißt es wieder: sichern, bevor es wieder weg ist.</p>
+          <ul class="spec-list">
+            <li class="reveal"><span>⚡️</span><div><b>9 essentielle Aminosäuren</b><small>Alle EAAs, die dein Körper nicht selbst bilden kann</small></div></li>
+            <li class="reveal"><span>💪</span><div><b>11 g Protein pro Shake</b><small>Für Aufbau und Regeneration rund ums Training</small></div></li>
+            <li class="reveal"><span>🍒</span><div><b>Intensiver Cherry-Fruit Geschmack</b><small>Fruchtig, erfrischend, kein künstlicher Nachgeschmack</small></div></li>
+            <li class="reveal"><span>🚫</span><div><b>Glutenfrei & laktosefrei</b><small>Bekömmlich – auch bei empfindlichem Magen</small></div></li>
+            <li class="reveal"><span>🥤</span><div><b>20 Servings voller Power</b><small>Ein Behälter, 20 Sessions</small></div></li>
+          </ul>
+          <div class="stock reveal">
+            <div class="stock__label"><span>Lagerbestand</span><b id="stockText">Nur noch wenige verfügbar</b></div>
+            <div class="stock__bar"><span id="stockBar"></span></div>
+          </div>
+          <button class="btn btn--red magnetic reveal" data-quick-add="eaa">EAA+ sichern <span class="arrow">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUALITY -->
+    <section class="section quality" id="quality">
+      <div class="container">
+        <div class="section__head section__head--center">
+          <p class="eyebrow reveal">Warum Top G</p>
+          <h2 class="section__title reveal">QUALITY FIRST.<br><span class="gold">ALWAYS.</span></h2>
+        </div>
+        <div class="pillars">
+          <article class="pillar reveal tilt">
+            <div class="pillar__icon">🇩🇪</div>
+            <h3>100% Made in Germany</h3>
+            <p>Entwickelt und produziert in Deutschland – nach strengen Qualitäts- und Hygienestandards.</p>
+          </article>
+          <article class="pillar reveal tilt">
+            <div class="pillar__icon">🥤</div>
+            <h3>Perfekt löslich</h3>
+            <p>Keine klumpigen Shakes mehr. Smooth, leicht löslich und angenehm im Magen.</p>
+          </article>
+          <article class="pillar reveal tilt">
+            <div class="pillar__icon">😋</div>
+            <h3>Geschmack, der ballert</h3>
+            <p>Cherry, Apfel, Cookies & Cream – Supplements, auf die du dich wirklich freust.</p>
+          </article>
+          <article class="pillar reveal tilt">
+            <div class="pillar__icon">🏆</div>
+            <h3>Made for Champions</h3>
+            <p>Für alle, die Disziplin über Ausreden stellen. Kein Shortcut – nur Ergebnisse.</p>
+          </article>
+        </div>
+
+        <div class="compare reveal">
+          <div class="compare__col compare__col--bad">
+            <h4>Andere Shakes</h4>
+            <ul>
+              <li>✕ Klumpig & schwer löslich</li>
+              <li>✕ Künstlicher Nachgeschmack</li>
+              <li>✕ Liegt schwer im Magen</li>
+              <li>✕ Herkunft unklar</li>
+            </ul>
+          </div>
+          <div class="compare__vs">VS</div>
+          <div class="compare__col compare__col--good">
+            <h4>Top G Nutrition</h4>
+            <ul>
+              <li>✓ Ultra leicht & perfekt löslich</li>
+              <li>✓ Brutaler Geschmack</li>
+              <li>✓ Angenehm bekömmlich</li>
+              <li>✓ 100% Made in Germany</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY / INSTAGRAM -->
+    <section class="section community" id="community">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <p class="eyebrow reveal">@topg.nutrition</p>
+            <h2 class="section__title reveal">JOIN THE<br><span class="gold">CHAMPIONS.</span></h2>
+          </div>
+          <a class="btn btn--ghost magnetic reveal" href="https://www.instagram.com/topg.nutrition/" target="_blank" rel="noopener">Auf Instagram folgen ↗</a>
+        </div>
+        <div class="insta" id="insta"></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq" id="faq">
+      <div class="container faq__inner">
+        <div>
+          <p class="eyebrow reveal">FAQ</p>
+          <h2 class="section__title reveal">NOCH<br><span class="gold">FRAGEN?</span></h2>
+          <p class="reveal muted">Schreib uns jederzeit per Instagram-DM – wir antworten schnell.</p>
+        </div>
+        <div class="accordion" id="accordion">
+          <details class="reveal" open>
+            <summary>Wo werden die Produkte hergestellt?</summary>
+            <p>Alle Top G Nutrition Produkte werden zu 100% in Deutschland hergestellt – Quality first. Always.</p>
+          </details>
+          <details class="reveal">
+            <summary>Was ist der Unterschied zwischen Clear Protein und klassischem Protein?</summary>
+            <p>Clear Protein ist ultra leicht, perfekt löslich und erfrischend wie ein Drink – statt cremig wie ein Milchshake. Ideal, wenn du's leicht und fruchtig magst.</p>
+          </details>
+          <details class="reveal">
+            <summary>Wann nehme ich EAA+ am besten?</summary>
+            <p>Klassisch vor, während oder nach dem Training. Eine Portion liefert alle 9 essentiellen Aminosäuren und 11 g Protein.</p>
+          </details>
+          <details class="reveal">
+            <summary>Ist das Vegan Protein wirklich nicht klumpig?</summary>
+            <p>Ja. Vegan heißt bei uns nicht mehr trocken & klumpig: smooth, leicht löslich und angenehm im Magen.</p>
+          </details>
+          <details class="reveal">
+            <summary>Wie schnell wird geliefert?</summary>
+            <p>Innerhalb Deutschlands in der Regel 1–3 Werktage. Ab 59 € Bestellwert versenden wir kostenlos.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section cta">
+      <div class="container">
+        <div class="cta__box reveal">
+          <div class="cta__glow"></div>
+          <h2>WERDE TEIL DER <span class="gold">TOP G</span> FAMILY</h2>
+          <p>Drops, Restocks & exklusive Angebote – du erfährst es <b>zuerst.</b></p>
+          <form class="cta__form" id="newsletter">
+            <label class="sr-only" for="email">E-Mail-Adresse</label>
+            <input type="email" id="email" placeholder="deine@email.de" required />
+            <button class="btn btn--gold" type="submit">Anmelden</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#top" class="logo">
+          <svg class="logo__crown" viewBox="0 0 64 40" aria-hidden="true"><path d="M4 36 L8 8 L22 22 L32 4 L42 22 L56 8 L60 36 Z" /></svg>
+          <span class="logo__text">TOP G<small>NUTRITION</small></span>
+        </a>
+        <p>Made for Champions 🏆<br>Made in Germany 100% 🇩🇪<br>Quality first. Always.</p>
+      </div>
+      <div class="footer__col">
+        <h5>Shop</h5>
+        <a href="#shop" data-filter-link="muskelaufbau">Muskelaufbau</a>
+        <a href="#shop" data-filter-link="definition">Definition</a>
+        <a href="#shop" data-filter-link="performance">Performance</a>
+        <a href="#shop" data-filter-link="vegan">Vegan</a>
+      </div>
+      <div class="footer__col">
+        <h5>Service</h5>
+        <a href="#faq">FAQ</a>
+        <a href="#">Versand & Rückgabe</a>
+        <a href="https://www.instagram.com/topg.nutrition/" target="_blank" rel="noopener">Kontakt</a>
+      </div>
+      <div class="footer__col">
+        <h5>Rechtliches</h5>
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+        <a href="#">AGB</a>
+        <a href="#">Widerrufsrecht</a>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Top G Nutrition. Alle Rechte vorbehalten.</span>
+      <span>Alle Preise inkl. MwSt., zzgl. Versand.</span>
+    </div>
+  </footer>
+
+  <!-- Product modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal__close" data-close aria-label="Schließen">✕</button>
+      <div class="modal__content" id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Cart drawer -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer__backdrop" data-close-cart></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Warenkorb">
+      <div class="drawer__head">
+        <h3>Warenkorb</h3>
+        <button class="modal__close" data-close-cart aria-label="Warenkorb schließen">✕</button>
+      </div>
+      <div class="ship">
+        <p id="shipText">Noch 59,00 € bis zum Gratis-Versand</p>
+        <div class="ship__bar"><span id="shipBar"></span></div>
+      </div>
+      <div class="drawer__items" id="cartItems"></div>
+      <div class="drawer__foot">
+        <div class="drawer__total"><span>Zwischensumme</span><b id="cartTotal">0,00 €</b></div>
+        <button class="btn btn--gold btn--block" id="checkout">Zur Kasse <span class="arrow">→</span></button>
+        <small>Inkl. MwSt. · Versand wird an der Kasse berechnet</small>
+      </div>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
