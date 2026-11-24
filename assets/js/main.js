@@ -528,6 +528,138 @@
     if (s) { const ids = s.dataset.addStack.split(","); ids.forEach((id) => addToCart(id, 0, 1, true)); toast(`✓ ${ids.length} Produkte im Warenkorb`); openCart(); }
   });
 
+  /* ---------- Auftritt: Scroll-Animation (nur die Produkte) ----------
+     Eine Scrollstrecke auf einer stehenden Bühne, P läuft von 0 bis 1. Erst steht nur das Logo. Dann kommen die drei
+     Dosen nacheinander von unten und drehen sich dabei nach vorn. Die Drehung sind Einzelbilder aus je einem Clip,
+     freigestellt und in Sammelbilder gepackt (assets/img/act/<Name>/s0.webp …; per = Bilder je Datei, cols = Spalten).
+     Zuletzt kommt die Zeile Wort für Wort, dann der Knopf. sets: Breite und Höhe eines Einzelbilds, l für Computer,
+     s für Handys (der Ordner heißt wie die Höhe); side: −1 links, 0 Mitte, 1 rechts; size: Höhe im Verhältnis zur
+     mittleren Dose; from/to: Beginn und Ende des Auftritts auf der Strecke. Steht die Dose, zeigt die Seite das
+     scharfe Ruhebild (f00.webp). Die Sammelbilder erzeugt tools/build_act_sheets.py. */
+  const ACT = {
+    clear: { n: 48, per: 8, cols: 4, sets: { l: [424, 680], s: [276, 440] }, side: 0, size: 1, from: 0.05, to: 0.4 },
+    eaa: { n: 48, per: 8, cols: 4, sets: { l: [374, 440], s: [246, 290] }, side: -1, size: 0.62, from: 0.2, to: 0.55 },
+    multi: { n: 48, per: 8, cols: 4, sets: { l: [336, 540], s: [218, 350] }, side: 1, size: 0.7, from: 0.32, to: 0.68 },
+  };
+  function buildAct() {
+    const sec = $("#auftritt");
+    if (!sec || reduced || window.innerHeight < 460) return;   // sehr flache Fenster behalten den ruhigen Grundzustand
+    const stage = $(".act__stage", sec), pin = $(".act__pin", sec), mark = $(".act__mark", sec), story = $(".act__story", sec), say = $("[data-say]", sec), cta = $("a", story);
+    const clamp = (v) => Math.min(1, Math.max(0, v)), seg = (v, a, b) => clamp((v - a) / (b - a));
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2), lerp = (a, b, t) => a + (b - a) * t;
+
+    // Jedes Wort bekommt eine eigene Hülle; der ganze Satz bleibt für Vorleseprogramme als ein Stück erhalten.
+    const full = say.textContent.replace(/\s+/g, " ").trim(), view = document.createElement("span");
+    let words = 0;
+    const walk = (from, to) => [...from.childNodes].forEach((node) => {
+      if (node.nodeType === 1) { const copy = node.cloneNode(false); to.append(copy); walk(node, copy); return; }
+      if (node.nodeType !== 3) return;
+      node.textContent.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { to.append(" "); return; }
+        const outer = document.createElement("span"), inner = document.createElement("span");
+        outer.className = "act__w"; outer.style.setProperty("--i", words++); inner.textContent = part; outer.append(inner); to.append(outer);
+      });
+    });
+    walk(say, view);
+    view.setAttribute("aria-hidden", "true");
+    const sr = document.createElement("span"); sr.className = "sr-only"; sr.textContent = full;
+    say.replaceChildren(sr, view); say.style.setProperty("--n", words);
+    sec.classList.add("is-live");
+
+    const SET = Math.min(window.innerWidth, window.innerHeight) < 700 ? "s" : "l";
+    const pieces = $$(".act__trio li", sec).map((li) => {
+      const fig = $(".act__piece", li), key = fig.dataset.key, d = ACT[key], canvas = $("canvas", fig), img = $("img", fig), size = d.sets[SET];
+      if (d.n && size) { d.w = size[0]; d.h = size[1]; canvas.width = d.w; canvas.height = d.h; } else d.n = 0;
+      return { li, fig, key, d, ctx: canvas.getContext("2d"), sheets: [], asked: false, shown: -1, want: 0, cap: $(".act__cap", li), ar: +img.getAttribute("width") / +img.getAttribute("height") };
+    });
+    const front = pieces.find((s) => !s.d.side) || pieces[0];
+
+    // Gezeichnet wird das gewünschte Bild; ist seine Datei noch nicht da, das nächstliegende aus einer geladenen.
+    const paint = (s, i) => {
+      if (!s.d.n) return;
+      s.want = i;
+      const per = s.d.per, has = (k) => !!s.sheets[Math.floor(k / per)];
+      let j = i;
+      while (j > 0 && !has(j)) j--;
+      if (!has(j)) { j = i; while (j < s.d.n - 1 && !has(j)) j++; }
+      const sheet = s.sheets[Math.floor(j / per)];
+      if (!sheet || j === s.shown) return;
+      const k = j % per;
+      s.ctx.clearRect(0, 0, s.d.w, s.d.h);
+      s.ctx.drawImage(sheet, (k % s.d.cols) * s.d.w, Math.floor(k / s.d.cols) * s.d.h, s.d.w, s.d.h, 0, 0, s.d.w, s.d.h);
+      s.shown = j; s.fig.classList.add("is-drawn");
+    };
+    const load = (s) => {
+      if (s.asked || !s.d.n) return;
+      s.asked = true;
+      for (let i = 0; i * s.d.per < s.d.n; i++) {
+        const im = new Image(); im.decoding = "async";
+        im.onload = () => { s.sheets[i] = im; if (s.shown !== s.want) paint(s, s.want); };
+        im.src = `assets/img/act/${s.key}/${s.d.h}/s${i}.webp`;
+      }
+    };
+
+    let raf = 0;
+    const draw = () => {
+      raf = 0;
+      const vh = window.innerHeight, r = stage.getBoundingClientRect();
+      if (r.top > vh * 1.6 || r.bottom < -vh * 0.6) return;
+      if (ready) pieces.forEach(load);
+      const w = pin.clientWidth, h = pin.clientHeight;
+      const P = clamp(-r.top / Math.max(1, r.height - vh)), pre = clamp(1 - r.top / vh);
+      const wide = w >= 900 && w >= h, gutter = Math.max(16, Math.min(56, w * 0.04));
+      // Maße: unten Zeile und Knopf, darüber die Namen, darüber stehen die Dosen; das Logo steht groß dahinter.
+      const capH = Math.max(40, ...pieces.map((s) => s.cap.offsetHeight + 12));
+      const base = h - 22 - story.offsetHeight - (wide ? 30 : 18) - capH, TOP = wide ? 104 : 92;
+      const mw = Math.min(w * (wide ? 0.72 : 0.92), 1300), mh = (mw * 694) / 2140;
+      const air = wide ? Math.max(24, Math.min(110, w * 0.05)) : 0, lap = wide ? 0.5 : 0.3;   // schmal: Seiten rücken hinter die Mitte
+      const sides = pieces.reduce((sum, s) => sum + (s === front ? 0 : s.ar * s.d.size), 0);
+      const room = wide ? base - TOP - mh * 0.34 : base - TOP - mh * 0.72;
+      const fit = wide ? (w - 2 * gutter - 2 * air) / (front.ar + sides) : (w - 2 * gutter) / (front.ar * 2 * lap + sides);
+      const Hf = Math.max(150, Math.min(room, fit, h * 0.62));
+      const lift = wide ? 0 : Math.max(0, room - Hf) * 0.42, ground = base - lift;   // schmal: freien Platz oben und unten verteilen
+      const my = wide ? TOP + mh / 2 : ground - Hf - mh * 0.22;
+      story.style.transform = lift ? `translateY(${(-lift).toFixed(1)}px)` : "";
+      const left = pieces.find((s) => s.d.side < 0), right = pieces.find((s) => s.d.side > 0);
+      const shift = ((left ? left.ar * left.d.size : 0) - (right ? right.ar * right.d.size : 0)) * Hf / 2;   // Gruppe mittig halten
+      mark.style.width = mw + "px";
+      mark.style.opacity = (seg(pre, 0.2, 0.75) * lerp(1, 0.8, seg(P, 0.5, 0.82))).toFixed(3);   // tritt leicht zurück, wenn die Zeile kommt
+      mark.style.transform = `translate(-50%, ${(my - mh / 2 - P * 26).toFixed(1)}px) scale(${lerp(1.14, 1, ease(pre)).toFixed(4)})`;
+      pieces.forEach((s) => {
+        const H = Hf * s.d.size, W = H * s.ar, t = ease(seg(P, s.d.from, s.d.to));
+        const cx = w / 2 + shift + s.d.side * (front.ar * Hf * lap + air + W / 2), y = ground - H + (1 - t) * Hf * 0.3;
+        s.fig.style.height = H.toFixed(1) + "px"; s.fig.style.width = W.toFixed(1) + "px";
+        s.li.style.transform = `translate(calc(${cx.toFixed(1)}px - 50%), ${y.toFixed(1)}px)`;
+        s.li.style.opacity = seg(t, 0, 0.3).toFixed(3); s.li.style.zIndex = s.d.side ? 1 : 2;
+        s.li.style.pointerEvents = t > 0.9 ? "auto" : "none";
+        s.cap.style.opacity = seg(P, 0.68, 0.78).toFixed(3);
+        // schmal: Namen unter den sichtbaren Teil der Dose rücken und bei Bedarf umbrechen
+        const hidden = wide || !s.d.side ? 0 : front.ar * Hf * (0.5 - lap);
+        s.cap.style.maxWidth = wide ? "" : Math.max(64, W - hidden / 2).toFixed(0) + "px";
+        s.cap.style.transform = hidden ? `translateX(${((s.d.side * hidden) / 2).toFixed(1)}px)` : "";
+        paint(s, Math.round((1 - t) * (s.d.n - 1)));
+        s.fig.classList.toggle("is-rest", t >= 1);
+      });
+      say.style.setProperty("--p", seg(P, 0.62, 0.86).toFixed(3));
+      cta.style.opacity = seg(P, 0.82, 0.9).toFixed(3); cta.style.pointerEvents = P > 0.86 ? "auto" : "none";
+      // Brechen die Namen jetzt anders um als gemessen, einmal neu rechnen.
+      if (again < 2 && Math.max(40, ...pieces.map((s) => s.cap.offsetHeight + 12)) !== capH) { again++; ask(); } else again = 0;
+    };
+    let again = 0, ready = document.readyState === "complete";   // Sammelbilder erst laden, wenn die Seite selbst geladen ist
+    const ask = () => { if (!raf) raf = requestAnimationFrame(draw); };
+    if (!ready) window.addEventListener("load", () => { ready = true; ask(); });
+    window.addEventListener("scroll", ask, { passive: true }); window.addEventListener("resize", ask);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(ask);
+    // Tastatur: Wer in den Abschnitt hineintabbt, bekommt den fertigen Zustand zu sehen.
+    sec.addEventListener("focusin", (e) => {
+      if (!e.target.matches(":focus-visible")) return;
+      const r = stage.getBoundingClientRect(), end = r.top + window.scrollY + r.height - window.innerHeight;
+      if (window.scrollY < end - 4) window.scrollTo(0, end);
+    });
+    draw();
+  }
+
   /* ---------- Newsletter ---------- */
   $("#newsletter").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -648,6 +780,7 @@
   setHero(0, false);
   restartHeroTimer();
   setFlavor(0, false);
+  buildAct();
   particles();
   $$(".reveal").forEach((el) => revObs.observe(el));
   $$(".tilt").forEach(bindTilt);

@@ -88,6 +88,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   transition: background .3s, backdrop-filter .3s, border-color .3s;
   border-bottom: 1px solid transparent;
 }
+html:not(.js) .header { background: rgba(7, 7, 7, .92); border-color: var(--line); }
 .header.is-scrolled { background: rgba(7, 7, 7, .72); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); border-color: var(--line); }
 .header__inner { display: flex; align-items: center; justify-content: space-between; height: 76px; gap: 24px; }
 .logo { display: inline-flex; color: #fff; transition: color .3s, filter .3s; flex-shrink: 0; }
@@ -203,6 +204,44 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .ticker__track { display: inline-flex; align-items: center; gap: 36px; padding: 22px 0; animation: marquee 32s linear infinite; font-family: var(--display); font-size: clamp(28px, 4vw, 48px); letter-spacing: .02em; }
 .ticker__track span:nth-child(4n+1) { -webkit-text-stroke: 1px var(--gold); color: transparent; }
 .ticker__track i { color: var(--yellow); font-style: normal; font-size: .6em; }
+
+/* ---------- Auftritt: Scroll-Animation mit den Produkten ---------- */
+.act { position: relative; z-index: 1; overflow: clip; background: radial-gradient(ellipse at 50% 40%, #1a160d 0%, var(--bg) 64%); }
+.act__pin { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: clamp(18px, 3vh, 30px); padding: clamp(70px, 9vw, 120px) max(16px, env(safe-area-inset-right, 0px)) clamp(50px, 6vw, 80px) max(16px, env(safe-area-inset-left, 0px)); }
+.act__mark { display: block; width: min(92vw, 1300px); height: auto; fill: url(#actGold); }
+.act__trio { display: flex; justify-content: center; align-items: flex-end; gap: clamp(6px, 3vw, 48px); width: 100%; margin: clamp(-90px, -8vw, -30px) 0 0; padding: 0; list-style: none; }
+.act__trio li { position: relative; flex: 0 0 auto; }
+.act__trio li:nth-child(1) { order: 2; z-index: 2; }
+.act__trio li:nth-child(2) { order: 1; }
+.act__trio li:nth-child(3) { order: 3; }
+.act__item { display: grid; justify-items: center; gap: 12px; text-align: center; }
+.act__piece { position: relative; display: block; height: min(40svh, 52vw, 460px); aspect-ratio: var(--ar, .62); filter: drop-shadow(0 30px 34px rgba(0,0,0,.7)); }
+.act__trio li:nth-child(2) .act__piece { height: min(24.8svh, 32vw, 285px); }
+.act__trio li:nth-child(3) .act__piece { height: min(28svh, 36vw, 322px); }
+.act__piece img, .act__piece canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.act__piece canvas { display: none; }
+.act__cap { position: relative; z-index: 1; display: grid; gap: 2px; max-width: 30vw; font-size: 12px; line-height: 1.3; letter-spacing: .04em; color: var(--muted); }
+.act__cap b { font-size: 13px; font-weight: 700; color: var(--text); }
+.act__story { display: grid; justify-items: center; gap: clamp(16px, 2.4vh, 24px); text-align: center; }
+.act h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(26px, 3vw, 44px); line-height: 1.04; letter-spacing: .01em; text-wrap: balance; }
+.act h2 em { font-style: normal; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* mit Skript: die Bühne bleibt stehen, das Scrollen steuert den Ablauf */
+.act.is-live .act__stage { height: 280vh; height: 280svh; }
+.act.is-live .act__pin { position: sticky; top: 0; display: block; height: 100vh; height: 100svh; min-height: 520px; padding: 0; overflow: hidden; }
+.act.is-live .act__mark { position: absolute; left: 50%; top: 0; will-change: transform, opacity; }
+.act.is-live .act__trio { position: absolute; inset: 0; display: block; margin: 0; }
+.act.is-live .act__trio li { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+.act.is-live .act__piece { height: auto; }
+.act.is-live .act__piece canvas { display: block; }
+.act.is-live .act__piece.is-drawn:not(.is-rest) img { visibility: hidden; }
+.act.is-live .act__piece.is-rest canvas { visibility: hidden; }
+.act.is-live .act__cap { max-width: none; }
+.act.is-live .act__story { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(22px, env(safe-area-inset-bottom, 0px)); }
+/* die Zeile kommt Wort für Wort: --p (0…1) setzt das Skript, --i ist die Wortnummer, --n die Anzahl */
+.act.is-live h2 em { background: none; color: inherit; }
+.act.is-live h2 em .act__w > span { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.act.is-live .act__w { display: inline-block; vertical-align: top; overflow-x: visible; overflow-y: clip; padding-bottom: .14em; margin-bottom: -.14em; }
+.act.is-live .act__w > span { display: inline-block; --r: clamp(0, calc((var(--p, 0) * (var(--n, 1) + 4) - var(--i, 0)) / 4), 1); transform: translateY(calc((1 - var(--r)) * 105%)); opacity: var(--r); }
 
 /* ---------- Filters ---------- */
 .filters { display: flex; gap: 8px; flex-wrap: wrap; padding: 6px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-2); }

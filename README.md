@@ -8,15 +8,18 @@ Reines HTML/CSS/JS, ohne Build-Schritt. `index.html` im Browser öffnen oder auf
 ```
 index.html               Seitenaufbau & Texte (Logo als Vektor eingebettet)
 assets/css/style.css     Design (Dark/Gold, responsive, Animationen)
-assets/js/main.js        Produktdaten, Warenkorb, Ziel-Finder, Effekte
+assets/js/main.js        Produktdaten, Warenkorb, Ziel-Finder, Scroll-Animation, Effekte
 assets/img/logo.svg      Logo als Vektor (aus dem Original-Logo nachgezeichnet)
 assets/img/products/     Freigestellte Produktbilder (+ kleine *-thumb.webp)
+assets/img/act/          Bilder der Scroll-Animation: je Dose 48 Einzelbilder in Sammelbildern + Ruhebild
 assets/img/posts/        Die echten Instagram-Motive
+tools/                   Skripte, mit denen die Bilder der Scroll-Animation gebaut wurden
 ```
 
 ## Features
 
 - Hero mit 3D-Maus-Parallax und Produkt-Switch durch alle 7 Produkte
+- Scroll-Animation „Auftritt“: Nur die Produkte. Vor dem großen Logo kommen drei Dosen nacheinander ins Bild und drehen sich beim Scrollen nach vorn
 - Shop mit Filtern (Protein, Aminos & Vitamine, Vegan, Zubehör) und Sortenwahl direkt auf der Karte
 - Clear-Whey-Bereich mit Sorten-Wechsler (Apple Rings ↔ Fresh Cherry), Farbwelt wechselt mit
 - Produkt-Detailansicht mit Sorte und Menge
@@ -46,6 +49,16 @@ Die freigestellten Produktbilder wurden mit Higgsfield (GPT Image) aus den Insta
 - **Kleingedrucktes** (Social-Media-Zeilen am rechten Rand) ist nicht lesbar nachgebildet.
 
 Für den Livegang am besten die Original-Packshots der Druckerei/des Designers einsetzen: Datei in `assets/img/products/` ersetzen (freigestelltes PNG oder WebP, gleicher Dateiname) und bei Bedarf `w`/`h` in `PRODUCTS` anpassen. Die kleinen `*-thumb.webp` (168 px hoch) gehören jeweils dazu.
+
+## Scroll-Animation „Auftritt“
+
+Der Abschnitt nach dem Hero (`#auftritt`) zeigt nur die Produkte: Clear Whey Protein in der Mitte, EAA+ links, Multi-Vitamin rechts. Die Bühne bleibt stehen, das Scrollen steuert den Ablauf (Logo, drei Dosen, Zeile, Knopf).
+
+- **Technik:** Je Dose gibt es 48 Einzelbilder einer knappen halben Drehung, gepackt in sechs Sammelbilder, in zwei Größen (Computer und Handy). `buildAct()` in `assets/js/main.js` zeichnet beim Scrollen das passende Bild. Steht die Dose, zeigt die Seite das scharfe Ruhebild `f00.webp`. Reihenfolge, Größe und Zeitpunkte stehen in `ACT` direkt darüber.
+- **Herkunft:** Die Drehung stammt je Dose aus einem KI-Clip (Higgsfield, MiniMax H3, 5 Sekunden), der mit dem freigestellten Produktbild als erstem Bild vor einfarbigem Hintergrund startet. `tools/act_start_image.py` baut dieses Startbild, `tools/build_act_sheets.py` stellt die Einzelbilder frei und packt die Sammelbilder.
+- **Einschränkung:** Die Vorderseite stammt aus dem Produktbild. Die **Seiten und Rückseiten der Dosen sind von der KI erfunden** (angedeutete Nährwerttabelle, bei Multi-Vitamin ein weißes Feld mit Strichcode). Sie sind nur kurz und klein zu sehen, entsprechen aber nicht den echten Etiketten. Mit echten Rundum-Aufnahmen der Dosen lassen sich die Bilder 1:1 ersetzen.
+- **Gewicht:** Die Sammelbilder wiegen zusammen etwa 3,7 MB (Computer) bzw. 2,0 MB (Handy). Sie werden erst geladen, wenn die Seite selbst fertig geladen ist. Bis dahin steigen die Dosen ohne Drehung auf.
+- **Ohne Bewegung:** Bei „Bewegung reduzieren“, ohne JavaScript und in sehr flachen Fenstern stehen Logo, Dosen und Zeile ruhig untereinander.
 
 ## Vor dem Livegang anpassen
 
